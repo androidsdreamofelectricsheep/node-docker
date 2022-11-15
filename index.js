@@ -34,20 +34,29 @@ const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
-const connectWithRetry = () => {
-  mongoose
-    .connect(
-      `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`
-      // `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/test`
-    )
-    .then(() => console.log("successfully connected to DB"))
-    .catch((e) => {
-      console.error(e);
-      setTimeout(connectWithRetry, 5000);
-    });
-};
+// const connectWithRetry = () => {
+//   mongoose
+//     .connect(
+//       `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`
+//       // `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/test`
+//     )
+//     .then(() => console.log("successfully connected to DB"))
+//     .catch((e) => {
+//       console.error(e);
+//       setTimeout(connectWithRetry, 5000);
+//     });
+// };
 
-connectWithRetry();
+// connectWithRetry();
+
+mongoose
+  .connect(
+    `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`
+  )
+  .then(() => console.log("successfully connected to DB"))
+  .catch((e) => {
+    console.error(MONGO_USER, MONGO_PASSWORD, MONGO_IP, MONGO_PORT, e);
+  });
 
 app.enable("trust proxy");
 app.use(cors({}));
