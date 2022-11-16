@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const mongoose = require("mongoose");
 const session = require("express-session");
 const redis = require("redis");
@@ -6,15 +7,7 @@ const cors = require("cors");
 
 let RedisStore = require("connect-redis")(session);
 
-const {
-  MONGO_USER,
-  MONGO_PASSWORD,
-  MONGO_IP,
-  MONGO_PORT,
-  REDIS_URL,
-  REDIS_PORT,
-  SESSION_SECRET,
-} = require("./config/config");
+const { REDIS_URL, REDIS_PORT, SESSION_SECRET } = require("./config/config");
 
 let redisClient = redis.createClient({
   legacyMode: true,
@@ -34,29 +27,19 @@ const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
-// const connectWithRetry = () => {
-//   mongoose
-//     .connect(
-//       `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`
-//       // `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/test`
-//     )
-//     .then(() => console.log("successfully connected to DB"))
-//     .catch((e) => {
-//       console.error(e);
-//       setTimeout(connectWithRetry, 5000);
-//     });
-// };
+const connectWithRetry = () => {
+  mongoose
+    .connect(
+      `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@pikachu.qhkrd5s.mongodb.net/?retryWrites=true&w=majority`
+    )
+    .then(() => console.log("successfully connected to DB"))
+    .catch((e) => {
+      console.error(e);
+      setTimeout(connectWithRetry, 5000);
+    });
+};
 
-// connectWithRetry();
-
-mongoose
-  .connect(
-    `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`
-  )
-  .then(() => console.log("successfully connected to DB"))
-  .catch((e) => {
-    console.error(MONGO_USER, MONGO_PASSWORD, MONGO_IP, MONGO_PORT, e);
-  });
+connectWithRetry();
 
 app.enable("trust proxy");
 app.use(cors({}));

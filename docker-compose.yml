@@ -13,16 +13,6 @@ services:
     build: .
     environment:
       - PORT=3000
-    depends_on:
-      - mongo
-
-  mongo:
-    image: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=snap
-      - MONGO_INITDB_ROOT_PASSWORD=mypassword
-    volumes:
-      - mongo-db:/data/db
 
   redis:
     image: redis

@@ -13,12 +13,6 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - MONGO_USER=snap
-      - MONGO_PASSWORD=mypassword
       - SESSION_SECRET=ragnarok
 
     command: npm run dev
-  mongo:
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=snap
-      - MONGO_INITDB_ROOT_PASSWORD=mypassword
