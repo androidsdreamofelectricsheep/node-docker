@@ -60,7 +60,7 @@ app.use(
 app.use(express.json());
 
 app.get("/api/v1", (req, res) => {
-  res.send("<h2>power overwhelming</h2>");
+  res.send("<h2>💫💫💫💫💫</h2>");
   console.log("If you are reading this message, that means it works fine.");
 });
 
